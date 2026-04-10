@@ -1,0 +1,1194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Phong C.H. Nguyen — Scientific Machine Learning</title>
+  <meta name="description" content="Phong C.H. Nguyen — Faculty at Phenikaa University working on scientific machine learning, physics-informed learning, and intelligent physical systems." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;1,400&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #F7F5F0;
+      --surface:   #EDEAE2;
+      --ink:       #181714;
+      --ink-mid:   #4A4840;
+      --ink-muted: #7A7870;
+      --ink-faint: #B0AEA8;
+      --accent:    #2A5C8A;
+      --accent-bg: #EAF0F7;
+      --rule:      rgba(24,23,20,0.1);
+      --serif:     'Lora', Georgia, serif;
+      --sans:      'DM Sans', system-ui, sans-serif;
+      --mono:      'DM Mono', monospace;
+      --w:         740px;
+      --nav:       58px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: var(--sans);
+      font-size: 15px;
+      font-weight: 300;
+      line-height: 1.75;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ─── NAV ─── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0;
+      height: var(--nav);
+      background: rgba(247,245,240,0.94);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--rule);
+      z-index: 99;
+      display: flex; align-items: center;
+      justify-content: space-between;
+      padding: 0 clamp(1.25rem, 5vw, 2.5rem);
+    }
+
+    .nav-logo {
+      font-family: var(--serif);
+      font-size: 17px;
+      font-weight: 500;
+      color: var(--ink);
+      text-decoration: none;
+      letter-spacing: 0.01em;
+    }
+
+    .nav-links { display: flex; gap: 1.5rem; list-style: none; }
+
+    .nav-links a {
+      font-size: 12.5px;
+      font-weight: 400;
+      color: var(--ink-muted);
+      text-decoration: none;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      transition: color .18s;
+    }
+    .nav-links a:hover { color: var(--accent); }
+
+    .nav-menu { display: none; background: none; border: none; cursor: pointer; padding: 4px; }
+    .nav-menu span {
+      display: block; width: 22px; height: 1.5px;
+      background: var(--ink-mid); margin: 5px 0;
+      transition: all .2s;
+    }
+
+    /* ─── LAYOUT ─── */
+    main {
+      max-width: var(--w);
+      margin: 0 auto;
+      padding: 0 clamp(1.25rem, 5vw, 2rem);
+    }
+
+    section { padding: 4.5rem 0 1rem; }
+    #hero   { padding-top: calc(var(--nav) + 4.5rem); }
+
+    .label {
+      font-family: var(--mono);
+      font-size: 10.5px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 1rem;
+    }
+
+    hr.rule {
+      border: none;
+      border-top: 1px solid var(--rule);
+      margin: 0 0 2.5rem;
+    }
+
+    h1 {
+      font-family: var(--serif);
+      font-size: clamp(2.6rem, 7vw, 4.2rem);
+      font-weight: 400;
+      line-height: 1.08;
+      letter-spacing: -0.01em;
+      color: var(--ink);
+    }
+
+    h2 {
+      font-family: var(--serif);
+      font-size: clamp(1.5rem, 3.5vw, 2rem);
+      font-weight: 400;
+      line-height: 1.25;
+      color: var(--ink);
+      margin-bottom: 1.75rem;
+    }
+
+    h3 {
+      font-family: var(--serif);
+      font-size: 1.1rem;
+      font-weight: 500;
+      color: var(--ink);
+      line-height: 1.35;
+    }
+
+    p { color: var(--ink-mid); margin-bottom: .9rem; }
+    p:last-child { margin-bottom: 0; }
+
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* ─── HERO ─── */
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1fr 152px;
+      gap: 2.5rem;
+      align-items: start;
+    }
+
+    .hero-eyebrow {
+      font-family: var(--mono);
+      font-size: 11.5px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--ink-muted);
+      margin-bottom: 1rem;
+    }
+
+    .hero-tagline {
+      margin-top: 1.5rem;
+      font-size: 16px;
+      line-height: 1.8;
+      max-width: 500px;
+      color: var(--ink-mid);
+    }
+
+    .hero-tagline strong {
+      color: var(--ink);
+      font-weight: 500;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .6rem;
+      margin-top: 2rem;
+    }
+
+    .btn {
+      display: inline-flex; align-items: center; gap: 5px;
+      padding: 8px 16px;
+      font-family: var(--sans);
+      font-size: 12.5px;
+      font-weight: 400;
+      letter-spacing: 0.02em;
+      border-radius: 2px;
+      text-decoration: none;
+      transition: all .18s;
+      cursor: pointer;
+    }
+
+    .btn-solid {
+      background: var(--ink);
+      color: var(--bg);
+      border: 1px solid var(--ink);
+    }
+    .btn-solid:hover { background: var(--accent); border-color: var(--accent); text-decoration: none; color: #fff; }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--ink-mid);
+      border: 1px solid var(--rule);
+    }
+    .btn-ghost:hover { border-color: var(--ink-muted); color: var(--ink); text-decoration: none; }
+
+    .photo-box {
+      width: 152px; height: 190px;
+      background: var(--surface);
+      border: 1px solid var(--rule);
+      display: flex; align-items: center; justify-content: center;
+      text-align: center;
+    }
+
+    .photo-box img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+    .photo-placeholder {
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--ink-faint);
+      letter-spacing: 0.06em;
+      line-height: 1.6;
+      padding: .75rem;
+    }
+
+    /* stats strip */
+    .stats-strip {
+      display: flex;
+      gap: 0;
+      margin-top: 2.5rem;
+      border: 1px solid var(--rule);
+      background: var(--surface);
+    }
+
+    .stat {
+      flex: 1;
+      padding: .9rem 1rem;
+      border-right: 1px solid var(--rule);
+      text-align: center;
+    }
+    .stat:last-child { border-right: none; }
+
+    .stat-val {
+      font-family: var(--serif);
+      font-size: 1.5rem;
+      font-weight: 500;
+      color: var(--ink);
+      line-height: 1;
+    }
+
+    .stat-label {
+      font-family: var(--mono);
+      font-size: 9.5px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--ink-muted);
+      margin-top: .25rem;
+    }
+
+    /* ─── ABOUT ─── */
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 220px;
+      gap: 3rem;
+      align-items: start;
+    }
+
+    .about-text p { font-size: 15.5px; line-height: 1.85; }
+
+    .info-table { width: 100%; }
+    .info-table tr { border-bottom: 1px solid var(--rule); }
+    .info-table tr:last-child { border-bottom: none; }
+    .info-table td { padding: .55rem 0; font-size: 13px; vertical-align: top; }
+    .info-key {
+      font-family: var(--mono);
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--accent);
+      width: 80px;
+      padding-right: .75rem;
+      padding-top: .65rem;
+    }
+    .info-val { color: var(--ink-mid); line-height: 1.5; }
+
+    /* ─── RESEARCH ─── */
+    .research-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1px;
+      background: var(--rule);
+      border: 1px solid var(--rule);
+    }
+
+    .r-card {
+      background: var(--bg);
+      padding: 1.5rem 1.6rem;
+      transition: background .2s;
+    }
+    .r-card:hover { background: var(--accent-bg); }
+
+    .r-num {
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--ink-faint);
+      letter-spacing: 0.08em;
+      margin-bottom: .6rem;
+    }
+
+    .r-card h3 { font-size: 1rem; margin-bottom: .4rem; }
+    .r-card p  { font-size: 13.5px; line-height: 1.65; }
+
+    /* ─── PUBLICATIONS ─── */
+    .pub-stats {
+      display: flex; gap: 1.5rem;
+      align-items: center;
+      margin-bottom: 2rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid var(--rule);
+    }
+
+    .pub-stat-item {
+      text-align: center;
+    }
+
+    .pub-stat-val {
+      font-family: var(--serif);
+      font-size: 1.6rem;
+      font-weight: 500;
+      color: var(--ink);
+      line-height: 1;
+    }
+
+    .pub-stat-lab {
+      font-family: var(--mono);
+      font-size: 9.5px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--ink-muted);
+      margin-top: .2rem;
+    }
+
+    .pub-stat-div {
+      width: 1px; height: 40px;
+      background: var(--rule);
+    }
+
+    .featured-label {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      background: var(--accent-bg);
+      padding: 3px 8px;
+      display: inline-block;
+      margin-bottom: 1.25rem;
+    }
+
+    .pub-featured {
+      border: 1px solid var(--accent);
+      padding: 1.25rem 1.4rem;
+      margin-bottom: 2rem;
+      background: var(--accent-bg);
+    }
+
+    .pub-featured h3 { font-size: 1.05rem; margin-bottom: .4rem; }
+    .pub-featured h3 a { color: var(--ink); }
+    .pub-featured h3 a:hover { color: var(--accent); text-decoration: none; }
+
+    .pub-list {}
+
+    .pub-item {
+      display: grid;
+      grid-template-columns: 44px 1fr;
+      gap: 1rem;
+      padding: 1.25rem 0;
+      border-bottom: 1px solid var(--rule);
+    }
+
+    .pub-year {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--ink-faint);
+      letter-spacing: 0.04em;
+      padding-top: 3px;
+    }
+
+    .pub-title {
+      font-family: var(--serif);
+      font-size: 1rem;
+      font-weight: 400;
+      color: var(--ink);
+      line-height: 1.4;
+      margin-bottom: .3rem;
+      display: block;
+    }
+    .pub-title:hover { color: var(--accent); }
+
+    .pub-meta {
+      font-size: 12.5px;
+      color: var(--ink-muted);
+      line-height: 1.5;
+    }
+
+    .pub-meta em { font-style: italic; }
+
+    .pub-tags { display: flex; flex-wrap: wrap; gap: 5px; margin-top: .4rem; }
+
+    .tag {
+      font-family: var(--mono);
+      font-size: 9.5px;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      padding: 2px 7px;
+      border: 1px solid var(--rule);
+      color: var(--ink-muted);
+    }
+
+    .tag-q1 { border-color: #2A5C8A; color: #2A5C8A; background: var(--accent-bg); }
+    .tag-conf { border-color: #6B4F1E; color: #6B4F1E; background: #F5EFE6; }
+
+    .cite-count {
+      font-family: var(--mono);
+      font-size: 10.5px;
+      color: var(--ink-faint);
+      margin-left: .5rem;
+    }
+
+    /* ─── PROJECTS ─── */
+    .proj-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    .proj-card {
+      border: 1px solid var(--rule);
+      padding: 1.25rem 1.4rem;
+      transition: border-color .2s, transform .18s;
+    }
+    .proj-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+
+    .proj-status {
+      font-family: var(--mono);
+      font-size: 9.5px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--accent);
+      margin-bottom: .6rem;
+    }
+
+    .proj-card h3 { font-size: 1rem; margin-bottom: .4rem; }
+    .proj-card p  { font-size: 13px; line-height: 1.6; }
+
+    .proj-links {
+      display: flex; gap: .75rem;
+      margin-top: 1rem;
+      padding-top: .9rem;
+      border-top: 1px solid var(--rule);
+      font-size: 12px;
+    }
+
+    /* ─── BLOG ─── */
+    .blog-item {
+      display: grid;
+      grid-template-columns: 90px 1fr;
+      gap: 1.25rem;
+      padding: 1.25rem 0;
+      border-bottom: 1px solid var(--rule);
+    }
+
+    .blog-date {
+      font-family: var(--mono);
+      font-size: 10.5px;
+      color: var(--ink-faint);
+      letter-spacing: 0.04em;
+      padding-top: 4px;
+      line-height: 1.5;
+    }
+
+    .blog-title {
+      font-family: var(--serif);
+      font-size: 1.08rem;
+      font-weight: 400;
+      color: var(--ink);
+      display: block;
+      margin-bottom: .3rem;
+      line-height: 1.35;
+    }
+    .blog-title:hover { color: var(--accent); }
+    .blog-excerpt { font-size: 13px; line-height: 1.6; }
+
+    .blog-coming {
+      padding: 2rem;
+      background: var(--surface);
+      border: 1px dashed var(--ink-faint);
+      text-align: center;
+    }
+    .blog-coming p { font-size: 14px; font-style: italic; }
+
+    /* ─── CONSULTING ─── */
+    .consulting-box {
+      border-left: 3px solid var(--accent);
+      background: var(--surface);
+      padding: 2rem 2.25rem;
+    }
+
+    .consulting-box h3 { font-size: 1.2rem; margin-bottom: .75rem; }
+
+    .service-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: .4rem .75rem;
+      margin: 1.25rem 0 1.5rem;
+      list-style: none;
+    }
+
+    .service-grid li {
+      font-size: 13.5px;
+      color: var(--ink-mid);
+      padding-left: .9rem;
+      position: relative;
+    }
+    .service-grid li::before {
+      content: '—';
+      position: absolute; left: 0;
+      color: var(--accent);
+    }
+
+    /* ─── CONTACT ─── */
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2.5rem;
+    }
+
+    .contact-list { list-style: none; margin-top: .5rem; }
+    .contact-list li {
+      display: flex; gap: .75rem;
+      padding: .5rem 0;
+      border-bottom: 1px solid var(--rule);
+      font-size: 13.5px; align-items: center;
+    }
+    .contact-list li:last-child { border-bottom: none; }
+
+    .c-label {
+      font-family: var(--mono);
+      font-size: 9.5px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--accent);
+      min-width: 68px;
+    }
+
+    .c-val { color: var(--ink-mid); }
+    .c-val a { color: var(--ink-mid); }
+    .c-val a:hover { color: var(--accent); }
+
+    /* ─── FOOTER ─── */
+    footer {
+      border-top: 1px solid var(--rule);
+      padding: 2rem 0;
+      margin-top: 4rem;
+      text-align: center;
+    }
+    footer p {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--ink-faint);
+      letter-spacing: 0.05em;
+    }
+
+    /* ─── MOBILE ─── */
+    @media (max-width: 620px) {
+      .nav-links { display: none; }
+      .nav-menu  { display: block; }
+      .hero-grid { grid-template-columns: 1fr; }
+      .photo-box { display: none; }
+      .about-grid { grid-template-columns: 1fr; }
+      .research-grid { grid-template-columns: 1fr; }
+      .proj-grid { grid-template-columns: 1fr; }
+      .contact-grid { grid-template-columns: 1fr; }
+      .blog-item { grid-template-columns: 1fr; gap: .2rem; }
+      .pub-item  { grid-template-columns: 1fr; gap: .2rem; }
+      .service-grid { grid-template-columns: 1fr; }
+      .stats-strip { flex-wrap: wrap; }
+      .stat { min-width: 33%; }
+    }
+
+    /* ─── FADE IN ─── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(14px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .hero-eyebrow { animation: fadeUp .5s ease both; }
+    h1            { animation: fadeUp .55s .08s ease both; }
+    .hero-tagline { animation: fadeUp .55s .16s ease both; }
+    .hero-actions { animation: fadeUp .55s .24s ease both; }
+    .stats-strip  { animation: fadeUp .55s .3s ease both; }
+  </style>
+</head>
+<body>
+
+<!-- ─── NAV ─── -->
+<nav>
+  <a class="nav-logo" href="#hero">Phong C.H. Nguyen</a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#research">Research</a></li>
+    <li><a href="#publications">Publications</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#blog">Blog</a></li>
+    <li><a href="#consulting">Consulting</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <button class="nav-menu" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<main>
+
+  <!-- ─── HERO ─── -->
+  <section id="hero">
+    <div class="hero-grid">
+      <div>
+        <p class="hero-eyebrow">Faculty · Phenikaa University · Hanoi, Vietnam</p>
+        <h1>Phong<br><em style="font-style:italic; color:var(--accent)">C.H.</em> Nguyen</h1>
+        <p class="hero-tagline">
+          I develop <strong>machine learning systems grounded in physical laws</strong> —
+          from physics-informed neural networks and 3D geometric reasoning,
+          toward intelligent systems that understand and act in the physical world.
+        </p>
+        <div class="hero-actions">
+          <a href="#publications" class="btn btn-solid">View Publications</a>
+          <a href="https://scholar.google.com/citations?user=dTI5u5wAAAAJ" target="_blank" class="btn btn-ghost">Google Scholar</a>
+          <a href="https://github.com/hphong1990" target="_blank" class="btn btn-ghost">GitHub</a>
+          <a href="#contact" class="btn btn-ghost">Contact</a>
+        </div>
+      </div>
+      <div>
+        <div class="photo-box">
+          <div class="photo-placeholder">
+            Add your<br>photo here<br>
+            <br>
+            <span style="font-size:9px; opacity:.6">160 × 190 px</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="stats-strip">
+      <div class="stat">
+        <div class="stat-val">874</div>
+        <div class="stat-label">Citations</div>
+      </div>
+      <div class="stat">
+        <div class="stat-val">17</div>
+        <div class="stat-label">h-index</div>
+      </div>
+      <div class="stat">
+        <div class="stat-val">18</div>
+        <div class="stat-label">i10-index</div>
+      </div>
+      <div class="stat">
+        <div class="stat-val">53%</div>
+        <div class="stat-label">Q1 Papers</div>
+      </div>
+      <div class="stat">
+        <div class="stat-val">2024</div>
+        <div class="stat-label">Latest — ICML</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── ABOUT ─── -->
+  <section id="about">
+    <hr class="rule" />
+    <div class="label">About</div>
+    <div class="about-grid">
+      <div class="about-text">
+        <p>
+          I am a faculty member at the Faculty of Mechanical Engineering and Mechatronics,
+          Phenikaa University, Hanoi. My research sits at the intersection of
+          <strong style="color:var(--ink); font-weight:500">scientific machine learning</strong>,
+          computational physics, and intelligent robotics — building models that learn from
+          data while respecting the governing laws of the physical world.
+        </p>
+        <p>
+          My work has evolved from 3D geometric understanding and computational design
+          toward physics-informed neural networks and dynamical systems modeling.
+          The common thread: using mathematical structure to make machine learning
+          work reliably in physical domains where data is scarce and mistakes are costly.
+          My research has been published in venues including
+          <em>ICML</em>, <em>Science Advances</em>, <em>Scientific Reports</em>,
+          <em>Additive Manufacturing</em>, and <em>Automation in Construction</em>.
+        </p>
+        <p>
+          <!-- Add a personal line here — hobbies, what you care about outside research -->
+          <!-- Example: "Outside the lab, I enjoy [X]." Even one line makes you memorable. -->
+          I collaborate closely with researchers at the University of Virginia,
+          University of Iowa, Columbia University, and Kyungpook National University.
+        </p>
+      </div>
+      <div>
+        <table class="info-table">
+          <tr>
+            <td class="info-key">Position</td>
+            <td class="info-val">Faculty, Mechanical Engineering &amp; Mechatronics</td>
+          </tr>
+          <tr>
+            <td class="info-key">Institute</td>
+            <td class="info-val">Phenikaa University, Hanoi</td>
+          </tr>
+          <tr>
+            <td class="info-key">Also at</td>
+            <td class="info-val">Sharetech JSC</td>
+          </tr>
+          <tr>
+            <td class="info-key">Email</td>
+            <td class="info-val">
+              <!-- Replace with your actual email -->
+              <a href="mailto:phong.nguyench@phenikaa-uni.edu.vn">phong.nguyench<br>@phenikaa-uni.edu.vn</a>
+            </td>
+          </tr>
+          <tr>
+            <td class="info-key">PhD</td>
+            <td class="info-val">
+              <!-- Fill in: Institution, Year, Field -->
+              [Institution], [Year]
+            </td>
+          </tr>
+          <tr>
+            <td class="info-key">ORCID</td>
+            <td class="info-val">
+              <a href="https://orcid.org/0000-0002-8660-9866" target="_blank">0000-0002-8660-9866</a>
+            </td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── RESEARCH ─── -->
+  <section id="research">
+    <hr class="rule" />
+    <div class="label">Research</div>
+    <h2>Three threads, one question:<br>how do physical systems learn?</h2>
+    <div class="research-grid">
+      <div class="r-card">
+        <div class="r-num">01</div>
+        <h3>Physics-Informed Machine Learning</h3>
+        <p>
+          Neural networks trained not only on data but constrained by the governing
+          equations of physics — PDEs, conservation laws, dynamical system structure.
+          This makes learning reliable in sparse-data regimes where purely
+          data-driven methods fail. Core work includes PARCv2 (ICML 2024) and
+          microstructure synthesis using GANs and reinforcement learning.
+        </p>
+      </div>
+      <div class="r-card">
+        <div class="r-num">02</div>
+        <h3>Geometric Intelligence &amp; 3D Vision</h3>
+        <p>
+          Computational understanding of 3D geometry — point cloud processing,
+          spatial object recognition, and geometric reasoning for industrial
+          and robotic applications. This thread connects classical CAD/CAM
+          to modern deep learning, enabling machines to see and reason
+          about the shape of the physical world.
+        </p>
+      </div>
+      <div class="r-card">
+        <div class="r-num">03</div>
+        <h3>Data-Driven Design &amp; Manufacturing</h3>
+        <p>
+          Accelerating engineering design through machine learning surrogates —
+          topology optimization, functionally graded structures, additive manufacturing.
+          The goal: designs that are not only optimal but buildable, connecting
+          the computational and physical worlds across the full design-to-fabrication pipeline.
+        </p>
+      </div>
+      <div class="r-card">
+        <div class="r-num">04</div>
+        <h3>Intelligent Physical Systems</h3>
+        <p>
+          The forward frontier: robots and autonomous systems that perceive,
+          model, and act in dynamic physical environments. Drawing on
+          physics-informed learning and 3D perception to build systems
+          capable of human-robot interaction grounded in physical awareness
+          — where scientific ML meets embodied intelligence.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── PUBLICATIONS ─── -->
+  <section id="publications">
+    <hr class="rule" />
+    <div class="label">Publications</div>
+    <h2>Selected publications</h2>
+
+    <div class="pub-stats">
+      <div class="pub-stat-item">
+        <div class="pub-stat-val">874</div>
+        <div class="pub-stat-lab">Total citations</div>
+      </div>
+      <div class="pub-stat-div"></div>
+      <div class="pub-stat-item">
+        <div class="pub-stat-val">17</div>
+        <div class="pub-stat-lab">h-index</div>
+      </div>
+      <div class="pub-stat-div"></div>
+      <div class="pub-stat-item">
+        <div class="pub-stat-val">18</div>
+        <div class="pub-stat-lab">i10-index</div>
+      </div>
+      <div class="pub-stat-div"></div>
+      <div class="pub-stat-item">
+        <div class="pub-stat-val">53%</div>
+        <div class="pub-stat-lab">Published in Q1 journals</div>
+      </div>
+      <div class="pub-stat-div"></div>
+      <a href="https://scholar.google.com/citations?user=dTI5u5wAAAAJ" target="_blank" class="btn btn-ghost" style="margin-left: auto;">
+        Full list on Scholar →
+      </a>
+    </div>
+
+    <div class="featured-label">Featured</div>
+
+    <div class="pub-featured">
+      <h3>
+        <a href="https://github.com/hphong1990/PARCv2" target="_blank">
+          PARCv2: Physics-aware Recurrent Convolutional Neural Networks
+          for Spatiotemporal Dynamics Modeling
+        </a>
+      </h3>
+      <p class="pub-meta" style="margin-top:.3rem;">
+        PCH Nguyen, X Cheng, S Azarfar, P Seshadri, YT Nguyen, M Kim, S Choi, HS Udaykumar, S Baek
+      </p>
+      <p class="pub-meta"><em>International Conference on Machine Learning (ICML)</em>, 2024</p>
+      <p style="font-size:13.5px; margin-top:.5rem; color:var(--ink-mid);">
+        A physics-aware recurrent convolutional architecture for learning and predicting
+        spatiotemporal physical dynamics — combining physical structure with deep sequence modeling
+        for high-fidelity surrogate simulation.
+      </p>
+      <div class="pub-tags" style="margin-top:.6rem;">
+        <span class="tag tag-conf">ICML 2024</span>
+        <span class="tag tag-q1">Scientific ML</span>
+        <a href="https://github.com/hphong1990/PARCv2" target="_blank" class="tag" style="cursor:pointer;">Code ↗</a>
+      </div>
+    </div>
+
+    <div class="pub-list">
+
+      <div class="pub-item">
+        <div class="pub-year">2022</div>
+        <div>
+          <a class="pub-title" href="#" target="_blank">
+            Synthesizing controlled microstructures of porous media using generative
+            adversarial networks and reinforcement learning
+          </a>
+          <p class="pub-meta">
+            PCH Nguyen, NN Vlassis, B Bahmani, WC Sun, HS Udaykumar, SS Baek
+            <span class="cite-count">· 90 citations</span>
+          </p>
+          <p class="pub-meta"><em>Scientific Reports</em> 12 (1), 9034</p>
+          <div class="pub-tags">
+            <span class="tag tag-q1">Q1</span>
+            <span class="tag">Scientific ML</span>
+            <span class="tag">Microstructure</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="pub-item">
+        <div class="pub-year">2021</div>
+        <div>
+          <a class="pub-title" href="#" target="_blank">
+            Design for additive manufacturing of functionally graded lattice structures:
+            A design method with process induced anisotropy consideration
+          </a>
+          <p class="pub-meta">
+            CHP Nguyen, Y Kim
+            <span class="cite-count">· 95 citations</span>
+          </p>
+          <p class="pub-meta"><em>International Journal of Precision Engineering and Manufacturing-Green Technology</em></p>
+          <div class="pub-tags">
+            <span class="tag tag-q1">Q2</span>
+            <span class="tag">Additive Manufacturing</span>
+            <span class="tag">Design</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="pub-item">
+        <div class="pub-year">2021</div>
+        <div>
+          <a class="pub-title" href="#" target="_blank">
+            Homogenization-based optimum design of additively manufactured
+            Voronoi cellular structures
+          </a>
+          <p class="pub-meta">
+            QT Do, CHP Nguyen, Y Choi
+            <span class="cite-count">· 75 citations</span>
+          </p>
+          <p class="pub-meta"><em>Additive Manufacturing</em> 45, 102057</p>
+          <div class="pub-tags">
+            <span class="tag tag-q1">Q1</span>
+            <span class="tag">Topology Optimization</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="pub-item">
+        <div class="pub-year">2020</div>
+        <div>
+          <a class="pub-title" href="#" target="_blank">
+            Automatic pipe and elbow recognition from three-dimensional point cloud model
+            of industrial plant piping system using convolutional neural network-based
+            primitive classification
+          </a>
+          <p class="pub-meta">
+            Y Kim, CHP Nguyen, Y Choi
+            <span class="cite-count">· 54 citations</span>
+          </p>
+          <p class="pub-meta"><em>Automation in Construction</em> 116, 103236</p>
+          <div class="pub-tags">
+            <span class="tag tag-q1">Q1</span>
+            <span class="tag">3D Vision</span>
+            <span class="tag">Point Cloud</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="pub-item">
+        <div class="pub-year">2020</div>
+        <div>
+          <a class="pub-title" href="#" target="_blank">
+            Concurrent density distribution and build orientation optimization
+            of additively manufactured functionally graded lattice structures
+          </a>
+          <p class="pub-meta">
+            CHP Nguyen, Y Choi
+            <span class="cite-count">· 48 citations</span>
+          </p>
+          <p class="pub-meta"><em>Computer-Aided Design</em> 127, 102884</p>
+          <div class="pub-tags">
+            <span class="tag tag-q1">Q2</span>
+            <span class="tag">Design Optimization</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="pub-item">
+        <div class="pub-year">2018</div>
+        <div>
+          <a class="pub-title" href="#" target="_blank">
+            Comparison of point cloud data and 3D CAD data for on-site dimensional
+            inspection of industrial plant piping systems
+          </a>
+          <p class="pub-meta">
+            CHP Nguyen, Y Choi
+            <span class="cite-count">· 129 citations</span>
+          </p>
+          <p class="pub-meta"><em>Automation in Construction</em> 91, 44–52</p>
+          <div class="pub-tags">
+            <span class="tag tag-q1">Q1</span>
+            <span class="tag">3D Vision</span>
+            <span class="tag">Point Cloud</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div style="margin-top: 1.5rem; text-align: right;">
+      <a href="https://scholar.google.com/citations?user=dTI5u5wAAAAJ" target="_blank" class="btn btn-ghost">
+        View all publications on Google Scholar →
+      </a>
+    </div>
+  </section>
+
+  <!-- ─── PROJECTS ─── -->
+  <section id="projects">
+    <hr class="rule" />
+    <div class="label">Projects &amp; Code</div>
+    <h2>Open research</h2>
+
+    <div class="proj-grid">
+      <div class="proj-card">
+        <div class="proj-status">Active · ICML 2024</div>
+        <h3>PARCv2</h3>
+        <p>
+          Physics-aware recurrent convolutional neural network for spatiotemporal
+          dynamics modeling. Combines physical structure with deep sequence learning
+          for surrogate simulation of complex physical systems.
+        </p>
+        <div class="proj-links">
+          <a href="https://github.com/hphong1990/PARCv2" target="_blank">GitHub ↗</a>
+          <a href="#" target="_blank">Paper ↗</a>
+        </div>
+      </div>
+
+      <div class="proj-card">
+        <div class="proj-status">Active</div>
+        <h3>FLRONet</h3>
+        <p>
+          <!-- Add a short description of FLRONet here -->
+          Neural operator approach for learning flow and dynamics representations.
+          Built on the foundations of physics-informed operator learning.
+        </p>
+        <div class="proj-links">
+          <a href="https://github.com/hphong1990/FLRONet" target="_blank">GitHub ↗</a>
+        </div>
+      </div>
+
+      <div class="proj-card">
+        <div class="proj-status">Research</div>
+        <h3>flrnet</h3>
+        <p>
+          <!-- Add a short description of flrnet here -->
+          Experimental repository for flow learning and representation
+          in physics-informed settings.
+        </p>
+        <div class="proj-links">
+          <a href="https://github.com/hphong1990/flrnet" target="_blank">GitHub ↗</a>
+        </div>
+      </div>
+
+      <div class="proj-card" style="border-style: dashed; opacity: .6;">
+        <div class="proj-status">Coming soon</div>
+        <h3>More repos</h3>
+        <p>
+          Code for microstructure synthesis (GAN + RL) and point cloud
+          recognition papers coming soon.
+        </p>
+        <div class="proj-links">
+          <a href="https://github.com/hphong1990" target="_blank">Follow on GitHub ↗</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── BLOG ─── -->
+  <section id="blog">
+    <hr class="rule" />
+    <div class="label">Blog</div>
+    <h2>Notes &amp; writing</h2>
+
+    <div class="blog-coming">
+      <p>Posts coming soon.</p>
+      <p style="margin-top:.4rem; font-size:12.5px; color:var(--ink-faint);">
+        Planned: physics-informed ML explainers · behind-the-paper reflections · research commentary
+      </p>
+    </div>
+
+    <!-- Uncomment and fill in when you have posts:
+
+    <div class="blog-list">
+      <div class="blog-item">
+        <div class="blog-date">Apr 2025</div>
+        <div>
+          <a class="blog-title" href="#">Why neural networks need to know physics</a>
+          <p class="blog-excerpt">
+            Pure data-driven ML works brilliantly in many domains.
+            But in physical systems — fluid dynamics, structural mechanics,
+            materials science — something goes wrong...
+          </p>
+        </div>
+      </div>
+    </div>
+
+    -->
+  </section>
+
+  <!-- ─── CONSULTING ─── -->
+  <section id="consulting">
+    <hr class="rule" />
+    <div class="label">Consulting &amp; Speaking</div>
+    <h2>Working together</h2>
+    <div class="consulting-box">
+      <h3>Available for collaboration and consulting</h3>
+      <p>
+        I work with research groups and industry teams on problems at the intersection
+        of scientific machine learning, physics simulation, intelligent manufacturing,
+        and robotics. If you have a hard problem involving physical systems and data,
+        I'm interested in talking.
+      </p>
+      <ul class="service-grid">
+        <li>Research collaboration</li>
+        <li>Industry consulting</li>
+        <li>Conference &amp; invited talks</li>
+        <li>Workshop facilitation</li>
+        <li>Guest lectures</li>
+        <li>PhD / postdoc advising</li>
+      </ul>
+      <a href="mailto:phong.nguyench@phenikaa-uni.edu.vn" class="btn btn-solid">
+        Get in touch →
+      </a>
+    </div>
+  </section>
+
+  <!-- ─── CONTACT ─── -->
+  <section id="contact">
+    <hr class="rule" />
+    <div class="label">Contact</div>
+    <h2>Get in touch</h2>
+
+    <div class="contact-grid">
+      <div>
+        <p style="font-size:14.5px;">
+          I respond to all genuine inquiries — research collaboration, consulting,
+          speaking, or just a conversation about physics-informed ML.
+          Typically within a week.
+        </p>
+        <div style="margin-top:1.5rem;">
+          <a href="mailto:phong.nguyench@phenikaa-uni.edu.vn" class="btn btn-solid">
+            Send an email →
+          </a>
+        </div>
+      </div>
+      <div>
+        <ul class="contact-list">
+          <li>
+            <span class="c-label">Email</span>
+            <span class="c-val">
+              <a href="mailto:phong.nguyench@phenikaa-uni.edu.vn">phong.nguyench@phenikaa-uni.edu.vn</a>
+            </span>
+          </li>
+          <li>
+            <span class="c-label">Scholar</span>
+            <span class="c-val">
+              <a href="https://scholar.google.com/citations?user=dTI5u5wAAAAJ" target="_blank">Google Scholar ↗</a>
+            </span>
+          </li>
+          <li>
+            <span class="c-label">GitHub</span>
+            <span class="c-val">
+              <a href="https://github.com/hphong1990" target="_blank">github.com/hphong1990 ↗</a>
+            </span>
+          </li>
+          <li>
+            <span class="c-label">LinkedIn</span>
+            <span class="c-val">
+              <a href="https://www.linkedin.com/in/phong-nguyen-9a9a10137/" target="_blank">LinkedIn ↗</a>
+            </span>
+          </li>
+          <li>
+            <span class="c-label">ORCID</span>
+            <span class="c-val">
+              <a href="https://orcid.org/0000-0002-8660-9866" target="_blank">0000-0002-8660-9866 ↗</a>
+            </span>
+          </li>
+          <li>
+            <span class="c-label">Location</span>
+            <span class="c-val">Hanoi, Vietnam (UTC+7)</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <p>© 2025 Phong C.H. Nguyen · Phenikaa University · Hanoi, Vietnam</p>
+</footer>
+
+<script>
+  // Mobile nav toggle
+  const btn = document.querySelector('.nav-menu');
+  const links = document.querySelector('.nav-links');
+  btn.addEventListener('click', () => {
+    const open = links.style.display === 'flex';
+    links.style.display = open ? '' : 'flex';
+    links.style.flexDirection = 'column';
+    links.style.position = 'absolute';
+    links.style.top = 'var(--nav)';
+    links.style.left = '0'; links.style.right = '0';
+    links.style.background = 'var(--bg)';
+    links.style.borderBottom = '1px solid var(--rule)';
+    links.style.padding = '1rem 1.5rem';
+    links.style.gap = '1rem';
+    if (open) { links.style.display = 'none'; }
+  });
+
+  // Close mobile nav on link click
+  document.querySelectorAll('.nav-links a').forEach(a => {
+    a.addEventListener('click', () => { links.style.display = ''; });
+  });
+</script>
+
+</body>
+</html>
